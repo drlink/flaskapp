@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Teste python</title>
+</head>
+<body>
+<h2>Integrando flask em html</h2>
+<hr>
+<h3>Inserindo variaveis simples no flask</h3>
+<br>
+Nome={{nome}}
+Idade={{idade}}
+<hr>
+<h3>Python lista sem for</h3>
+<br>
+<ol>
+    <li>{{feira[0]}}</li>
+    <li>{{feira[1]}}</li>
+    <li>{{feira[2]}}</li>
+    <li>{{feira[3]}}</li>
+</ol>
+<hr>
+<h3>primeiro for com lista</h3>
+<br>
+<ol>
+    {% for item in frutas %}
+         <li>{{item}}</li>
+    {% endfor %}
+</ol>
+<hr>
+<h3>Segundo for com dicionario e tag details</h3>
+<br>
+    {% for ITchave, ITvalor in notas.items() %}
+         <details>
+             <summary>{{ITchave}}</summary>
+             <p>{{ITvalor}}</p>
+         </details>
+    {% endfor %}
+<hr>
+
+
+</body>
+</html>
