@@ -39,6 +39,20 @@ Idade={{idade}}
     {% endfor %}
 <hr>
 
+<h3>Lista do form acima</h3>
+<br>
+<ol>
+    {% for item in fruta2 %}
+         <li>{{item}}</li>
+    {% endfor %}
+</ol>
+<hr>
+<h3>Envio de dados atravez de formularios</h3>
+<form action="{{url_for('princ')}}" method="POST">
+    <label>Frutas</label>
+    <input type="text" name="input_form">
+    <button>Adicionar</button>
+</form>
 
 </body>
 </html>
