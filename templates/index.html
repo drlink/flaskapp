@@ -1,13 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Teste python</title>
-</head>
-<body>
+{% extends 'base.html' %}
+#codigo para estender uma pagina html base
+#inicio do bloco de condigo , indicado na pagina html base
+{% block conteudo %}
 <h2>Integrando flask em html</h2>
 <hr>
-<h3>Inserindo variaveis simples no flask</h3>
+<!--<h3>Inserindo variaveis simples no flask</h3>
 <br>
 Nome={{nome}}
 Idade={{idade}}
@@ -38,21 +35,20 @@ Idade={{idade}}
          </details>
     {% endfor %}
 <hr>
-
-<h3>Lista do form acima</h3>
+-->
+<h3>Lista do form frutas</h3>
 <br>
-<ol>
+<ul class="list-group">
     {% for item in fruta2 %}
-         <li>{{item}}</li>
+         <li class="list-group-item">{{item}}</li>
     {% endfor %}
-</ol>
+</ul>
 <hr>
 <h3>Envio de dados atravez de formularios</h3>
 <form action="{{url_for('princ')}}" method="POST">
     <label>Frutas</label>
-    <input type="text" name="input_form">
-    <button>Adicionar</button>
+    <input class="form-control" type="text" name="input_form" id="exemploFruta" placeholder="Digite o nome de uma fruta">
+    <button class="btn btn-primary">Adicionar</button>
 </form>
-
-</body>
-</html>
+<br>
+{% endblock conteudo %} #Indica o fim do bloco de codigo que sera inserido na pagina html base
