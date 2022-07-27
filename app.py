@@ -1,12 +1,35 @@
-from flask import Flask, render_template, request
-import urllib.request, json
+from flask import Flask, render_template, request, redirect, url_for, flash
+from flask_sqlalchemy import SQLAlchemy
+import urllib.request, json, os
+
 
 
 app = Flask(__name__) #importa a classe Flask e define o parametro name dentro da variavel
+#inicializa o banco de dados
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cursos.sqlite3'
+app.config['SECRET_KEY'] = "random string"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+#instancia a classe
+db = SQLAlchemy(app)
 
 #Recebimento de dados variavel global
 fruta2 = [] #variavel global para que o seu conteu não seja modificado a cada carregamento
 registros = []
+
+class cursos(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(50))
+    descricao = db.Column(db.String(100))
+    ch = db.Column(db.Integer)
+
+    def __init__(self, nome, descricao, ch): #metodo construtor da classe
+        self.nome = nome
+        self.descricao = descricao
+        self.ch = ch
+
+
+
 @app.route('/', methods=["GET", "POST"])
 # 127.0.0.1:5000
 def princ():
@@ -48,3 +71,49 @@ def filmes(propriedade):
     dados = resp.read()
     jsondata = json.loads(dados)
     return render_template("filmes.html", filmes=jsondata['results'])
+
+@app.route('/cursos')
+def lista_cursos():
+    return render_template("cursos.html", cursos=cursos.query.all())
+
+@app.route('/cria_curso', methods=['GET','POST'])
+def cria_curso():
+    nome = request.form.get('nome')
+    descricao = request.form.get('descricao')
+    ch = request.form.get('ch')
+
+    if request.method == 'POST':
+        if not nome or not descricao or not ch:
+            flash("Preencha todos os campos do formulario","error")
+            pass
+        else:
+            print("PASSOU NAO SEI COMO ?")
+            #curso = cursos(nome, descricao, ch)
+            #db.session.add(curso)
+            #db.session.commit()
+            return redirect(url_for('lista_cursos'))
+
+    return render_template("novo_curso.html")
+
+@app.route('/<int:id>/atualiza_curso', methods=['GET','POST'])
+def atualiza_curso(id):
+    curso = cursos.query.filter_by(id=id).first()
+    if request.method == 'POST':
+        nome = request.form["nome"]
+        descricao = request.form["descricao"]
+        ch = request.form["ch"]
+        cursos.query.filter_by(id=id).update({"nome":nome, "descricao":descricao, "ch":ch})
+        db.session.commit()
+        return redirect(url_for('lista_cursos'))
+
+    return render_template("atualiza_curso.html", curso=curso)
+
+
+#=======================================================================================================================
+if __name__ =="__main__":
+    app.run(debug=True)
+    if os.path.isfile('cursos.sqlite3'):
+        print('Banco de dados presente OK')
+    else:
+        db.create_all()
+        print('Criando banco de dados')

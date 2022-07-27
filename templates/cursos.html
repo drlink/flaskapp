@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+
+<h2 style="text-align: center;">Lista de cursos</h2>
+<hr>
+<div class="container">
+  <div class="col-md-auto">
+    <a href="{{url_for('cria_curso')}}" class="btn btn-secondary">Adicionar curso</a>
+  </div>
+</div>
+<br>
+<div class="container">
+  <div class="col-md-auto">
+    <table class="table table-bordered table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Nome</th>
+          <th scope="col">Descrição</th>
+          <th scope="col">C.H.</th>
+            <th scope="col">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for curso in cursos %}
+            <tr>
+                <th scope="row">{{curso.id}}</th>
+                <td>{{curso.nome}}</td>
+                <td>{{curso.descricao}}</td>
+                <td>{{curso.ch}}</td>
+                <td><a href="{{curso.id}}/atualiza_curso" class="btn btn-secondary btn-xs">Editar</a></td>
+            </tr>
+        {% endfor %}
+
+      </tbody>
+</table>
+  </div>
+</div>
+
+
+
+
+
+{% endblock conteudo %}
