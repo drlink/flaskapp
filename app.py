@@ -2,21 +2,23 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 import urllib.request, json, os
 
-
-
+#============================CONFIGURACAO DO APLICATIVO FLASK===========================================================
 app = Flask(__name__) #importa a classe Flask e define o parametro name dentro da variavel
+
+#============================CONFIGURACAO DO BANCO DE DADOS=============================================================
 #inicializa o banco de dados
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cursos.sqlite3'
 app.config['SECRET_KEY'] = "random string"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 #instancia a classe
 db = SQLAlchemy(app)
 
+#============================VARIAVEIS==================================================================================
 #Recebimento de dados variavel global
 fruta2 = [] #variavel global para que o seu conteu não seja modificado a cada carregamento
 registros = []
 
+#============================CLASSE DE BANCO DE DADOS VIA SQL ALCHEMY===================================================
 class cursos(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(50))
@@ -28,10 +30,11 @@ class cursos(db.Model):
         self.descricao = descricao
         self.ch = ch
 
-
-
+#============================ROTA PRINCIPAL DO APP======================================================================
 @app.route('/', methods=["GET", "POST"])
 # 127.0.0.1:5000
+
+#============================INSERINDO E RECEBENDO DADOS DE UMA LISTA VIA POST==========================================
 def princ():
     #Envio de dados
     nome = "Sr y"
@@ -45,7 +48,7 @@ def princ():
             fruta2.append(request.form.get("input_form"))
     return render_template("index.html", nome=nome, idade=idade, feira=feira, frutas=frutas, notas=notas, fruta2=fruta2)
 
-
+#============================RECEBENDO DADOS DE UM FORMULARIO===========================================================
 @app.route('/sobre', methods=["GET", "POST"])
 def sobre():
     # Recebendo dados - prestar atenção o nome do que se recebe e o nome do input e não da variavel
@@ -54,6 +57,7 @@ def sobre():
             registros.append({"aluno": request.form.get("aluno"), "nota": request.form.get("nota")})
     return render_template("sobre.html", registros=registros)
 
+#============================ROTA DINAMICA PARA API=====================================================================
 @app.route('/filmes/<propriedade>')
 def filmes(propriedade):
     if propriedade == 'populares':
@@ -72,29 +76,32 @@ def filmes(propriedade):
     jsondata = json.loads(dados)
     return render_template("filmes.html", filmes=jsondata['results'])
 
+#============================LISTA OS REGISTROS=========================================================================
 @app.route('/cursos')
 def lista_cursos():
-    return render_template("cursos.html", cursos=cursos.query.all())
+    page = request.args.get('page', 1, type=int)
+    per_page = 4
+    todos_cursos = cursos.query.paginate(page, per_page)
+    return render_template("cursos.html", cursos=todos_cursos)
 
+#============================INSERCAO DE REGISTROS======================================================================
 @app.route('/cria_curso', methods=['GET','POST'])
 def cria_curso():
     nome = request.form.get('nome')
     descricao = request.form.get('descricao')
     ch = request.form.get('ch')
-
     if request.method == 'POST':
         if not nome or not descricao or not ch:
             flash("Preencha todos os campos do formulario","error")
             pass
         else:
-            print("PASSOU NAO SEI COMO ?")
-            #curso = cursos(nome, descricao, ch)
-            #db.session.add(curso)
-            #db.session.commit()
+            curso = cursos(nome, descricao, ch)
+            db.session.add(curso)
+            db.session.commit()
             return redirect(url_for('lista_cursos'))
-
     return render_template("novo_curso.html")
 
+#============================ATUALIZAÇÃO DE REGISTROS===================================================================
 @app.route('/<int:id>/atualiza_curso', methods=['GET','POST'])
 def atualiza_curso(id):
     curso = cursos.query.filter_by(id=id).first()
@@ -105,11 +112,17 @@ def atualiza_curso(id):
         cursos.query.filter_by(id=id).update({"nome":nome, "descricao":descricao, "ch":ch})
         db.session.commit()
         return redirect(url_for('lista_cursos'))
-
     return render_template("atualiza_curso.html", curso=curso)
 
+#============================REMOCAO DE REGISTROS=======================================================================
+@app.route('/<int:id>/remove_curso', methods=['GET','POST'])
+def remove_curso(id):
+    curso = cursos.query.filter_by(id=id).first()
+    db.session.delete(curso)
+    db.session.commit()
+    return redirect(url_for('lista_cursos'))
 
-#=======================================================================================================================
+#===========================================INICIACAO DO APLICATIVO=====================================================
 if __name__ =="__main__":
     app.run(debug=True)
     if os.path.isfile('cursos.sqlite3'):
