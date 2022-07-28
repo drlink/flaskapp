@@ -7,11 +7,12 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - MARIADB_ROOT_PASSWORD=M@$t3RCh3f
+      - MARIADB_ROOT_PASSWORD=M@st3R-Ch3f$ty20
+      #- MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=yes
       - TZ=America/Sao_Paulo
       - MARIADB_DATABASE=flaskapp
       - MARIADB_USER=flask
-      - MARIADB_PASSWORD=iddqdidkfa
+      - MARIADB_PASSWORD=iddqdidkfa$gL30
     restart: unless-stopped
     ports:
       - 3306:3306
@@ -23,6 +24,10 @@ services:
   adminer:
     image: adminer
     container_name: adminer
+    environment:
+      - ADMINER_DESIGN=hydra
+      - ADMINER_DEFAULT_SERVER=mysql
+      - ADMINER_PLUGINS=sql-log
     restart: unless-stopped
     ports:
       - 9006:8080
@@ -36,4 +41,8 @@ networks:
 ###### Usuario inicial banco de dados      #############
 # Usuario : flask
 # Senha : iddqdidkfa
+########################################################
+###### Usuario Root inicial banco de dados      ########
+# Usuario : root
+# Senha : M@st3R-Ch3f
 ########################################################
