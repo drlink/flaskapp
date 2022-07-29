@@ -5,12 +5,14 @@ from ..entidades import curso
 from .. services import curso_service
 from flask import request, make_response, jsonify
 
-#classe inicial para chamada de dados
+#classe retorna os dados
 class CursoList(Resource):
     def get(self):
-        return "Estudando api com flask"
+        cursos = curso_service.listar_cursos()
+        cs = curso_schema.CursoSchema(many=True)
+        return make_response(cs.jsonify(cursos), 201)
 
-#cadastra os dados
+#classe capta dados
     def post(self):
         cs = curso_schema.CursoSchema()
         validate = cs.validate(request.json)
