@@ -10,3 +10,6 @@ def cadastrar_curso(curso):
 def listar_cursos():
     cursos = curso_model.Curso.query.all()
     return cursos
+
+#parei no video39 minuto 1:02
+#def listar_curso_id():
