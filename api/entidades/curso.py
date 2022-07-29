@@ -1,5 +1,5 @@
 class Curso():
-    def __inti__(self, nome, descricao, data_publicacao):
+    def __init__(self, nome, descricao, data_publicacao):
         self.__nome = nome
         self.__descricao = descricao
         self.__data_publicacao = data_publicacao
