@@ -2,12 +2,8 @@
 
 ---
 
----
-
 <p>Este repositorio tem por caracteristica estudar e simular um aplicativo<br>
 web desenvolvido em python para ser utilizado em criação de esteira CI/CD de qual quer tipo.</p>
-
----
 
 ---
 
@@ -35,17 +31,17 @@ web desenvolvido em python para ser utilizado em criação de esteira CI/CD de q
 Esta aplicação esta estruturada com base no edesign patner MVC porem com modificações <br>
 
 Estrutura:
-- **/api** - > Contem os principais arquivos da aplicação 
-    - **/entidades** -> Contem os metodos gets, sets 
-    -  **/models** -> Contem os modelos base das estruturas de banco de dados (ORM)
-    -  **/schemas** -> Contem as validações de dados 
-    - **/services** -> Contem os C.R.U.D.S da aplicação (ORM)
-    - **/views** -> Contem as regras de negocio e as rotas das paginas
-    - **__ init __.py** -> Arquivo de declaração principal da api
-    - **run.py** -> Arquivo contem os codigos para a execução do aplicativo
-- **/migrations** -> Contem os scripts de criaçao e versionamento da estrutura de banco de dados (ORM)
-    - **/versions** -> Contem o script de montagen e desmontagem da estrutura de banco de dados
-- **config.py** -> config.py => Contem as configuraçoes de variaveis da aplicaçao
+- **/api** _-> Contem os principais arquivos da aplicação_ 
+    - **/entidades** _-> Contem os metodos gets, sets_ 
+    -  **/models** _-> Contem os modelos base das estruturas de banco de dados (ORM)_
+    -  **/schemas** _-> Contem as validações de dados_
+    - **/services** _-> Contem os C.R.U.D.S da aplicação (ORM)_
+    - **/views** _-> Contem as regras de negocio e as rotas das paginas_
+    - **__ init __.py** _-> Arquivo de declaração principal da api_
+    - **run.py** _-> Arquivo contem os codigos para a execução do aplicativo_
+- **/migrations** _-> Contem os scripts de criaçao e versionamento da estrutura de banco de dados (ORM)_
+    - **/versions** _-> Contem o script de montagen e desmontagem da estrutura de banco de dados_
+- **config.py** _-> config.py => Contem as configuraçoes de variaveis da aplicaçao_
 
 ---
 ### 4 - Comandos para construir a aplicação
