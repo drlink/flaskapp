@@ -5,7 +5,7 @@ from ..entidades import curso
 from .. services import curso_service
 from flask import request, make_response, jsonify
 
-#classe retorna os dados
+# pesquisa
 class CursoList(Resource):
     def get(self):
         cursos = curso_service.listar_cursos()
@@ -28,6 +28,7 @@ class CursoList(Resource):
             x = cs.jsonify(resultado)
             return make_response(x, 201)
 
+#pesquisa curso por id
 class CursoDetail(Resource):
     def get(self, id):
         curso = curso_service.listar_curso_id(id)
