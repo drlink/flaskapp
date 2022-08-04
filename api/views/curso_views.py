@@ -11,7 +11,7 @@ class CursoList(Resource):
         cursos = curso_service.listar_cursos()
         cs = curso_schema.CursoSchema(many=True)
         return make_response(cs.jsonify(cursos), 201)
-#
+
 #classe capta dados
     def post(self):
         cs = curso_schema.CursoSchema()

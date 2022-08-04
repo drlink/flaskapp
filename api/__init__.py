@@ -16,5 +16,5 @@ api = Api(app) # configuração da api
 ###
 
 #importando as views para o arquivo de inicialização
-from.views import curso_views
-from.models import curso_model
+from.views import curso_views, formacao_views
+from.models import curso_model, formacao_model
