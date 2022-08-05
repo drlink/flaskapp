@@ -2,7 +2,7 @@ from flask_restful import Resource
 from api import api
 from ..schemas import curso_schema
 from ..entidades import curso
-from .. services import curso_service
+from .. services import curso_service, formacao_service
 from flask import request, make_response, jsonify
 
 # pesquisa
@@ -22,8 +22,14 @@ class CursoList(Resource):
             nome = request.json["nome"]
             descricao = request.json["descricao"]
             data_publicacao = request.json["data_publicacao"]
+            #cadastro de chave estrabngeira
+            formacao = request.json["formacao"]
+            formacao_curso = formacao_service.listar_formacao_id(formacao)
+            #se a formação não existir e retornar nula ou vazia retorna erro
+            if formacao_curso is None:
+                return make_response(jsonify("Formacao nao foi encontrada"), 404)
 
-            novo_curso = curso.Curso(nome=nome, descricao=descricao, data_publicacao=data_publicacao)
+            novo_curso = curso.Curso(nome=nome, descricao=descricao, data_publicacao=data_publicacao, formacao=formacao_curso)
             resultado = curso_service.cadastrar_curso(novo_curso)
             x = cs.jsonify(resultado)
             return make_response(x, 201)
@@ -49,7 +55,14 @@ class CursoDetail(Resource):
             nome = request.json["nome"]
             descricao = request.json["descricao"]
             data_publicacao = request.json["data_publicacao"]
-            novo_curso = curso.Curso(nome=nome, descricao=descricao, data_publicacao=data_publicacao)
+            #atualiza chave estrangeira para formacao
+            formacao = request.json["formacao"]
+            formacao_curso = formacao_service.listar_formacao_id(formacao)
+            # se a formação não existir e retornar nula ou vazia retorna erro
+            if formacao_curso is None:
+                return make_response(jsonify("Formacao nao foi encontrada"), 404)
+
+            novo_curso = curso.Curso(nome=nome, descricao=descricao, data_publicacao=data_publicacao, formacao=formacao_curso)
             curso_service.atualiza_curso(curso_bd, novo_curso)
             curso_atualizado = curso_service.listar_curso_id(id)
 
